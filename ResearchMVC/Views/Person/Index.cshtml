@@ -1,0 +1,248 @@
+﻿@{
+    Layout = "~/Views/Shared/_InAppLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Search Persons";
+}
+
+@using ResearchMVC.DTOs
+
+<style>
+    .filter-label {
+        width: 120px;
+    }
+    .filter-label label {
+        padding-left:10px;
+    }
+    .filter-input input, .filter-input select {
+        width: 150px;
+    }
+
+    .filter-search-input input {
+        width: 120px;
+        padding-right: 10px;
+    }
+    .table-wrapper tbody td {
+        text-align: center;
+    }
+    .table-wrapper thead th {
+        text-align: center;
+    }
+</style>
+<div class="page">
+    @functions {
+        public static string isInfo(string term)
+        {
+            return term == "info" ? "info-wrapper" : "error-wrapper";
+        }
+    }
+
+    <div class="row">
+        <div class="d-flex page-top-bar">
+            <div class="mr-auto p-2"><h5>Search Persons</h5></div>
+        </div>
+    </div>
+    <div class="row">
+        @if (!string.IsNullOrEmpty((((string, string))ViewBag.Info).Item2))
+        {
+            <div class="status @isInfo(ViewBag.Info.Item1)" )>
+                <span>@ViewBag.Info.Item2</span>
+            </div>
+        }
+    </div>
+    <div class="page-content">
+
+        <div class="dot-elastic app-loading"></div>
+        <div class="filter-wrapper">
+            <div class="d-flex flex-row">
+                <div class="d-flex">
+                    <div class="filter-label">
+                        <label>Title:</label>
+                    </div>
+                    <div class="filter-input">
+                        <input type="text" name="search_title" />
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="filter-label">
+                        <label>Person Type:</label>
+                    </div>
+                    <div class="filter-input">
+                        <select name="search_person_type">
+                            <option value="all">All</option>
+                            <option value="in">IN</option>
+                            <option value="em">EM</option>
+                            <option value="sp">SP</option>
+                            <option value="sc">SC</option>
+                            <option value="vc">VC</option>
+                            <option value="gc">GC</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="filter-label">
+                        <label>First Name:</label>
+                    </div>
+                    <div class="filter-input">
+                        <input type="text" name="search_first_name" />
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row">
+                <div class="d-flex">
+                    <div class="filter-label">
+                        <label>Middle Name:</label>
+                    </div>
+                    <div class="filter-input">
+                        <input type="text" name="search_middle_name" />
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="filter-label">
+                        <label>Last Name:</label>
+                    </div>
+                    <div class="filter-input">
+                        <input type="text" name="search_last_name" />
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row">
+                <div class="filter-search-input">
+                    <input class="btn-search" id="BtnSearch" type="button" value="SEARCH" />
+                </div>
+                <div class="filter-search-input">
+                    <input class="btn-clear" id="BtnClear" type="button" value="CLEAR" />
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table id="personTable" class="display compact" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>@nameof(PersonDTO.Title)</th>
+                        <th>@nameof(PersonDTO.PersonType)</th>
+                        <th>@nameof(PersonDTO.FirstName)</th>
+                        <th>@nameof(PersonDTO.MiddleName)</th>
+                        <th>@nameof(PersonDTO.LastName)</th>
+                        <th>@nameof(PersonDTO.ContactType)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="1">
+                            <input class="btn-create" id="BtnCreate" type="button" value="CREATE" />&nbsp;<input class="btn-delete" id="BtnDelete" type="button" value="DELETE" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#menu-item-persons").addClass("selected");
+        toggleMenu($("#menu-item-persons .submenu-top-item a"));
+        var personTable = $('#personTable').DataTable(
+            {
+                autoWidth: false,
+                serverSide: true,
+                paging: true,
+                processing: true,
+                sorting: false,
+                dom: '<<t>lip>',
+                ajax: {
+                    url: "/Person/GetPersonsPaged",
+                    type: "GET",
+                    data: function (d) {
+                        d.searchTitle = $('input[name=search_title]').val();
+                        d.searchPersonType = $('select[name=search_person_type]').val();
+                        d.searchFirstName = $('input[name=search_first_name]').val();
+                        d.searchMiddleName = $('input[name=search_middle_name]').val();
+                        d.searchLastName = $('input[name=search_last_name]').val();
+                        $(".dot-elastic").css('display', 'block');
+                    },
+                    complete: function (response) {
+                        $(".dot-elastic").css('display', 'none');
+                    }
+                },
+                columns: [
+                    { data: 'Title' },
+                    { data: 'PersonType' },
+                    { data: "FirstName" },
+                    { data: "MiddleName" },
+                    { data: "LastName" },
+                    {
+                        data: "ContactType",
+                        render: function (data, type, row, meta) {
+                            return (row.ContactTypeDescription);
+                        }
+                    },
+                    {
+                        data: "BusinessEntityID",
+                        render: function (data, type, row, meta) {
+                            return ('<a style="color:green;" href="/Person/GetPersonById/' + row.BusinessEntityID + '">Edit</a>&nbsp;'
+                                + '<a style="color:orange;" href = "/Address/AddAddress/' + row.BusinessEntityID + '">Address</a>');
+
+                        }
+                    },
+                ],
+                columnDefs: [
+                    { width: 100, targets: 0 },
+                    { width: 100, targets: 1 },
+                    { width: 100, targets: 2 },
+                    { width: 100, targets: 3 },
+                    { width: 100, targets: 4 },
+                    { width: 100, targets: 5 },
+                    { width: 100, targets: 6 },
+                    { "className": "dt-center", "targets": "_all" },
+                ],
+                fixedColumns: true
+            }
+        );
+
+        $("#BtnSearch").click(function () {
+            personTable.draw();
+        });
+
+        $("#BtnClear").click(function () {
+            $('input[name=search_title]').val("");
+            $('select[name=search_person_type]').val("all");
+            $('input[name=search_first_name]').val("");
+            $('input[name=search_middle_name]').val("");
+            $('input[name=search_last_name]').val("");
+            personTable.draw();
+        });
+
+        $('#personTable tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                personTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $('#BtnDelete').on('click', function () {
+            var ids = $.map(personTable.rows('.selected').data(), function (item) {
+                return item.BusinessEntityID;
+            });
+
+            alert(ids);
+        });
+
+        $('#BtnCreate').on('click', function () {
+            window.location = "/Person/CreatePerson";
+        });
+    });
+</script>
+<style>
+    tfoot tr td {
+        display:flex;
+        justify-content:flex-start;
+    }
+</style>

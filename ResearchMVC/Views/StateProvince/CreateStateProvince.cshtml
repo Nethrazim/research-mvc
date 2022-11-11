@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_InAppLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Search Persons";
+}
+
+<div class="page">
+    <div class="row">
+        <div class="d-flex page-top-bar">
+            <div class="mr-auto p-2"><h5>Create State-Province</h5></div>
+            <div class="p-2">@{Html.RenderAction("Index", "Back", new { link = "Index", controller = "Person" });}</div>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+    
+    <div class="page-content">
+        <div class="dot-elastic app-loading"></div>
+        <div class="row">
+            <div class="col-md-4">
+                asd1
+            </div>
+            <div class="col-md-4">
+                asd2
+            </div>
+            <div class="col-md-4">
+                asd3
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#menu-item-persons").addClass("selected");
+        toggleMenu($("#menu-item-persons .submenu-top-item a"));
+    });
+</script>
+<style>
+    tfoot tr td {
+        display: flex;
+        justify-content: flex-start;
+    }
+</style>

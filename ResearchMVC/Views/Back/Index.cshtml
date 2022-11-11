@@ -1,0 +1,5 @@
+﻿@{
+    string link = (string)ViewBag.Link;
+    string controller = (string)ViewBag.Controller;
+}
+@Html.ActionLink("Back", link, controller, null, new { @class = "back-link"})

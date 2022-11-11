@@ -1,0 +1,199 @@
+﻿@{
+    Layout = "~/Views/Shared/_InAppLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Edit Person";
+}
+@using BusinessEntityAddressDTO = ResearchMVC.DTOs.BusinessEntityAddressDTO;
+@using PersonDTO = ResearchMVC.DTOs.PersonDTO;
+
+@model ResearchMVC.DTOs.BusinessEntityDTO
+<style>
+    label {
+        width: 200px;
+        margin-right:20px;
+    }
+    input, select {
+        width: 250px;
+    }
+
+    input[type=submit] {
+        width: 200px;
+    }
+</style>
+<div class="page">
+        <div class="row">
+            <div class="d-flex page-top-bar">
+                <div class="mr-auto p-2"><h5>Update Person</h5></div>
+                <div class="p-2">@{Html.RenderAction("Index", "Back", new { link = "Index", controller = "Person" });}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-content">
+                    @using (Html.BeginForm("UpdatePerson", "Person", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary()
+                        @Html.ValidationMessage("Internal Server Error")
+                        @Html.HiddenFor(m => m.BusinessEntityID)
+                    <div class="container-fluid">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item app-nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                                   aria-selected="true">Basic Information</a>
+                            </li>
+                            @foreach (var address in (List<BusinessEntityAddressDTO>)Model.BusinessEntityAddresses ?? new List<BusinessEntityAddressDTO>())
+                            {
+                                <li class="nav-item app-nav-item">
+                                    <a class="nav-link" id=@string.Concat(address.AddressType.Name, "-address", "-tab") data-toggle="tab" href=@string.Concat("#address-", address.AddressType.Name) role="tab" aria-controls=@string.Concat("address-", address.AddressType.Name) aria-selected="false">
+                                        @string.Concat(address.AddressType.Name, " Address")
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @Html.HiddenFor(m => m.Person.BusinessEntityID)
+                                        <div>
+                                            <label>Title: </label>@Html.TextBoxFor(m => m.Person.Title)
+                                        </div>
+                                        <div>
+                                            <label>PersonType: </label>@Html.DropDownList("Person.PersonType",
+                                                new List<SelectListItem>() {
+                                                new SelectListItem() { Text = "IN", Value="IN", Selected = Model.Person.PersonType == "IN" }
+                                                ,new SelectListItem() { Text = "EM", Value="EM", Selected = Model.Person.PersonType == "EM" }
+                                                ,new SelectListItem() { Text = "SP", Value="SP", Selected = Model.Person.PersonType == "SP" }
+                                                ,new SelectListItem() { Text = "SC", Value="SC", Selected = Model.Person.PersonType == "SC" }
+                                                ,new SelectListItem() { Text = "VC", Value="VC", Selected = Model.Person.PersonType == "VC" }
+                                                ,new SelectListItem() { Text = "GC", Value="GC", Selected = Model.Person.PersonType == "GC" }
+                                                })
+                                        </div>
+                                        <div>
+                                            <label>First Name: </label>@Html.TextBoxFor(m => m.Person.FirstName)
+                                            @Html.ValidationMessageFor(model => model.Person.FirstName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            <label>Middle Name: </label>@Html.TextBoxFor(m => m.Person.MiddleName)
+                                            @Html.ValidationMessageFor(model => model.Person.MiddleName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div>
+                                            <label>Last Name: </label>@Html.TextBoxFor(m => m.Person.LastName)
+                                            @Html.ValidationMessageFor(model => model.Person.LastName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label>Cell Phone: </label>
+                                            @Html.TextBoxFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 1).PhoneNumber, new { Name = "Person.PersonPhones[0].PhoneNumber" })
+                                            @Html.HiddenFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 1).PhoneNumberTypeID, new { Name = "Person.PersonPhones[0].PhoneNumberTypeID", Value = 1 })
+                                        </div>
+                                        <div>
+                                            <label>Home Phone: </label>
+                                            @Html.TextBoxFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 2).PhoneNumber, new { Name = "Person.PersonPhones[1].PhoneNumber" })
+                                            @Html.HiddenFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 2).PhoneNumberTypeID, new { Name = "Person.PersonPhones[1].PhoneNumberTypeID", Value = 2 })
+                                        </div>
+                                        <div>
+                                            <label>Work Phone: </label>
+                                            @Html.TextBoxFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 3).PhoneNumber, new { Name = "Person.PersonPhones[2].PhoneNumber" })
+                                            @Html.HiddenFor(m => m.Person.PersonPhones.FirstOrDefault(p => p.PhoneNumberTypeID == 3).PhoneNumberTypeID, new { Name = "Person.PersonPhones[2].PhoneNumberTypeID", Value = 3 })
+                                        </div>
+                                        <div>
+                                            <label>Email Address: </label>@Html.TextBoxFor(m => m.Person.EmailAddresses.FirstOrDefault().EmailAddress1, new { Name = "Person.EmailAddresses[0].EmailAddress1", @class = "email-address" })
+                                            @Html.HiddenFor(m => m.Person.EmailAddresses.FirstOrDefault().EmailAddressID, new { Value = -1, Name = "Person.EmailAddresses[0].EmailAddressID" })
+                                        </div>
+                                        @if (Model.Person.IsContact && Model.Person.ContactType != null)
+                                        {
+                                        <div>
+                                            <label>Contact Type: </label>@Html.TextBoxFor(m => m.Person.ContactType.Name)
+                                        </div>    
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @{ int i = 0;}
+                            @foreach (var address in (List<BusinessEntityAddressDTO>)Model.BusinessEntityAddresses ?? new List<BusinessEntityAddressDTO>())
+                            {
+                                <div class="tab-pane fade show" id=@string.Concat("address-", address.AddressType.Name) role="tabpanel" aria-labelledby=@string.Concat(address.AddressType.Name, "-address", "-tab")>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div>
+                                                @Html.HiddenFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.AddressID, new { Name = $"BusinessEntityAddresses[{i}].Address.AddressID" })
+                                                @Html.HiddenFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).AddressType.Name, new { Name = $"BusinessEntityAddresses[{i}].AddressType.Name" })
+                                                @Html.HiddenFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).AddressType.AddressTypeID, new { Name = $"BusinessEntityAddresses[{i}].AddressType.AddressTypeID" })
+                                                <div>
+                                                    <label>Address Line 1: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.AddressLine1, new { Name = $"BusinessEntityAddresses[{i}].Address.AddressLine1" })
+                                                </div>
+                                                <div>
+                                                    <label>Address Line 2: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.AddressLine2, new { Name = $"BusinessEntityAddresses[{i}].Address.AddressLine2" })
+                                                </div>
+                                                <div>
+                                                    <label>City: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.City, new { Name = $"BusinessEntityAddresses[{i}].Address.City" })
+                                                </div>
+                                                <div>
+                                                    <label>Postal Code: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.PostalCode, new { Name = $"BusinessEntityAddresses[{i}].Address.PostalCode" })
+                                                </div>
+                                                <div>
+                                                    <label>State Name: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.StateProvince.Name, new { Name = $"BusinessEntityAddresses[{i}].Address.StateProvince.Name", disabled = true })
+                                                    <br />
+                                                    @{
+                                                        var stateProvincesOptions = ((List<Tuple<int, string>>)(ViewBag.StateProvinces)).Select(c => new SelectListItem() { Text = c.Item2, Value = c.Item1.ToString(), Selected = address.Address.StateProvince.StateProvinceID == c.Item1 }).ToList();
+                                                    }
+                                                    <label></label>
+                                                    @Html.DropDownList($"BusinessEntityAddresses[{i}].Address.StateProvince.StateProvinceID", stateProvincesOptions, new { Title = "YES !! ! " })
+                                                </div>
+                                                <div>
+                                                    <label>State Code (ISO3): </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.StateProvince.StateProvinceCode, new { Name = $"BusinessEntityAddresses[{i}].Address.StateProvince.StateProvinceCode", disabled = true })
+                                                </div>
+                                                <div>
+                                                    <label>Country Name: </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.StateProvince.CountryRegion.Name, new { Name = $"BusinessEntityAddresses[{i}].Address.StateProvince.CountryRegion.Name", disabled = true })
+                                                </div>
+                                                <div>
+                                                    <label>Country Code (ISO3): </label>
+                                                    @Html.TextBoxFor(m => m.BusinessEntityAddresses.FirstOrDefault(adr => adr.AddressTypeID == address.AddressTypeID).Address.StateProvince.CountryRegion.CountryRegionCode, new { Name = $"BusinessEntityAddresses[{i}].Address.StateProvince.CountryRegion.CountryRegionCode", disabled = true })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                i++;
+                            }
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    <input class="btn-update" type="submit" value="UPDATE" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if ((Model.BusinessEntityAddresses ?? new List<BusinessEntityAddressDTO>()).Count() != 6)
+                                {
+                                    @Html.ActionLink("Create more addresses", "AddAddress", "Address", new { id = Model.BusinessEntityID }, null)
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#menu-item-persons").addClass("selected");
+    });
+</script>

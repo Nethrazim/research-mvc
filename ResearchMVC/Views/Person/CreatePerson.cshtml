@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_InAppLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Edit Person";
+}
+
+@model ResearchMVC.DTOs.PersonDTO
+<style>
+    label {
+        width: 150px;
+        margin-right: 20px;
+    }
+
+    input[type=text] {
+        width: 200px;
+    }
+
+    input[type=submit] {
+        width: 200px;
+        position: relative;
+        left: 170px;
+    }
+</style>
+<div class="page">
+    <div class="row">
+        <div class="d-flex page-top-bar">
+            <div class="mr-auto p-2"><h5>Create Person</h5></div>
+            <div class="p-2">@{Html.RenderAction("Index", "Back", new { link = "Index", controller = "Person" });}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-content">
+                @using (Html.BeginForm("CreatePerson", "Person", FormMethod.Post))
+                {
+                    @Html.ValidationSummary()
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.BusinessEntityID)
+                    <div>
+                        <label>Title: </label>@Html.TextBoxFor(m => m.Title)
+                    </div>
+                    <div>
+                        <label>PersonType: </label>@Html.DropDownList("PersonType",
+                        new List<SelectListItem>() {
+                        new SelectListItem()  { Text = "IN", Value="IN" }
+                        ,new SelectListItem() { Text = "EM", Value="EM" }
+                        ,new SelectListItem() { Text = "SP", Value="SP" }
+                        ,new SelectListItem() { Text = "SC", Value="SC" }
+                        ,new SelectListItem() { Text = "VC", Value="VC" }
+                        ,new SelectListItem() { Text = "GC", Value="GC" }
+                        })
+                    </div>
+                    <div>
+                        <label>First Name: </label>@Html.TextBoxFor(m => m.FirstName)
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        <label>Middle Name: </label>@Html.TextBoxFor(m => m.MiddleName)
+                        @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        <label>Last Name: </label>@Html.TextBoxFor(m => m.LastName)
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        <input type="submit" value="CREATE" class="btn-create"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#menu-item-persons").addClass("selected");
+        toggleMenu($("#menu-item-persons .submenu-top-item a"));
+    });
+</script>

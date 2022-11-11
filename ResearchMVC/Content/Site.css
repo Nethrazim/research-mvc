@@ -1,0 +1,213 @@
+﻿body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+    background-color: aliceblue;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+    will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #777;
+    border-color: #fff
+}
+
+.app-navbar {
+    background-color: rgb(2,100,191);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    border-bottom: 5px solid white;
+}
+
+.app-navbar h4 {
+    color: white;
+}
+
+.app-main-menu {
+    background-color: rgb(2,100,191);
+    min-height: 830px;
+    border-top: 5px solid white;
+    border-right: 5px solid white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    background-image: linear-gradient(rgb(2,100,191),  deepskyblue);
+}
+
+.app-main-menu ul {
+    list-style:none;
+    padding-left: 15px;
+    color:white;
+}
+.app-main-menu ul li {
+    padding:5px;
+    display:block;
+    color:white;
+    border-bottom: 1px solid white;
+}
+
+.app-main-menu ul li.selected {
+    padding: 0px;
+    display: block;
+    font-weight: bold;
+    margin-right: 5px;
+    font-style: italic;
+    color: white;
+}
+
+.app-main-menu ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color:inherit;
+}
+
+.app-footer {
+    padding-top: 50px;
+    color: white;
+    width: 100%;
+    background-color: rgb(2,100,191);
+    border-top: 5px solid white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.page {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+    min-height: 800px;
+}
+.page-content {
+    padding-top: 10px;
+}
+
+.app-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: none;
+}
+
+.info-wrapper {
+    border: 2px solid yellow;
+    background-color: limegreen;
+    color: white;
+    padding-left: 4px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.error-wrapper {
+    border: 2px solid yellow;
+    background-color: darkred;
+    color: white;
+    padding-left: 4px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.btn-search {
+    background-color: rgb(2,100,191);
+    color: white;
+    font-weight: bold;
+    border: 3px solid rgb(2,100,191);
+    margin-right: 5px;
+}
+
+.btn-clear {
+    background-color: cornflowerblue;
+    color: white;
+    font-weight: bold;
+    border: 3px solid cornflowerblue;
+}
+
+.btn-create {
+    background-color: darkgreen;
+    color: white;
+    font-weight: bold;
+    border: 3px solid darkgreen;
+}
+
+.btn-delete {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border: 3px solid red;
+}
+
+.btn-update {
+    background-color: lightseagreen;
+    color: white;
+    font-weight: bold;
+    border: 3px solid lightseagreen;
+}
+
+.page-top-bar {
+    width: 100%;
+    background-color: rgb(2,100,191);
+    color: white;
+}
+
+.back-link {
+    color:white;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.app-nav-item {
+    background-color: honeydew;
+}
+
+
+.status {
+    width: 100%;
+}
+
+.app-vertical-notification-panel {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-vertical-notification-panel span {
+    text-align: center;
+    color: saddlebrown;
+    font-weight: bold;
+}
+
+.app-vertical-notification-panel span.highlight {
+    color: green;
+    font-weight: 400;
+}
+
+.app-submenu-items {
+    display:none;
+}
+
+.app-submenu-items .submenu-item a {
+    font-size: 14px;
+    text-decoration: none;
+    padding-left:10px;
+}
