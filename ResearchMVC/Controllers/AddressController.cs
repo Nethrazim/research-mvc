@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
-using ResearchMVC.DTOs;
-using ResearchMVC.Services;
+using ResearchMVC.BusinessLogic.DTOs;
+using ResearchMVC.BusinessLogic.Services;
 
 namespace ResearchMVC.Controllers
 {

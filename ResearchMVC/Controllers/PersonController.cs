@@ -1,7 +1,7 @@
-﻿using ResearchMVC.DTOs;
+﻿using ResearchMVC.BusinessLogic.DTOs;
 using ResearchMVC.Helpers;
 using ResearchMVC.Requests;
-using ResearchMVC.Services;
+using ResearchMVC.BusinessLogic.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;

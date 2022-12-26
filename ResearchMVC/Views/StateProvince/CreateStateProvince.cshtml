@@ -5,7 +5,24 @@
 @{
     ViewBag.Title = "Search Persons";
 }
+@using ResearchMVC.BusinessLogic.DTOs
+@using ResearchMVC.DataLayer.Models
 
+@model ResearchMVC.BusinessLogic.DTOs.StateProvinceDTO
+<style>
+    label {
+        width: 200px;
+        margin-right: 20px;
+    }
+
+    input, select {
+        width: 250px;
+    }
+
+    input[type=submit] {
+        width: 200px;
+    }
+</style>
 <div class="page">
     <div class="row">
         <div class="d-flex page-top-bar">
@@ -19,14 +36,32 @@
     <div class="page-content">
         <div class="dot-elastic app-loading"></div>
         <div class="row">
-            <div class="col-md-4">
-                asd1
-            </div>
-            <div class="col-md-4">
-                asd2
-            </div>
-            <div class="col-md-4">
-                asd3
+            <div class="col-md-12">
+                @using (Html.BeginForm("Create", "StateProvince", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    @Html.ValidationMessage("Internal Server Error")
+                    <div>
+                        <label>State Code(ISO 3): </label>
+                        @Html.TextBoxFor(m => m.StateProvinceCode)
+                    </div>
+                    <div>
+                        <label>Name: </label>
+                        @Html.TextBoxFor(m => m.Name)
+                    </div>
+                    <div>
+                        <label>Country:</label>
+                        @Html.DropDownListFor(m => m.CountryRegionCode, ((List<CountryRegionDTO>)ViewBag.Countries).Select(c => new SelectListItem() { Text = c.Name, Value = c.CountryRegionCode }).ToList())
+                    </div>
+                    <div>
+                        <label>Teritory:</label>
+                        @Html.DropDownListFor(m => m.TerritoryID, ((List<SalesTerritory>)ViewBag.Teritories).Select(c => new SelectListItem() { Text = c.Name, Value = c.TerritoryID.ToString() }).ToList())
+                    </div>
+                    <div>
+                        <input type="submit" class="btnCreate" value="CREATE" />
+                    </div>
+                }
             </div>
         </div>
     </div>
