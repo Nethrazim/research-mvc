@@ -22,9 +22,9 @@ namespace ResearchMVC.DataLayer.Repositories
             this.dbSet = context.Set<TEntity>();
         }
 
-        public virtual void Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
-            if (dbContext.Entry(entity).State == EntityState.Detached)
+            if (IsDetached(entity))
             {
                 dbSet.Attach(entity);
             }
@@ -32,10 +32,20 @@ namespace ResearchMVC.DataLayer.Repositories
             dbSet.Remove(entity);
         }
 
+        public virtual bool IsDetached(TEntity entity)
+        {
+            return dbContext.Entry(entity).State == EntityState.Detached;
+        }
+
         public void Delete(object id)
         {
-            TEntity entityToDelete = dbSet.Find(id);
+            TEntity entityToDelete = Find(id);
             Delete(entityToDelete);
+        }
+
+        public virtual TEntity Find(object id)
+        {
+            return dbSet.Find(id);
         }
 
         public async Task<List<TEntity>> Get<P>(Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity,P>> orderBy = null, string includeProperties = "")
@@ -109,7 +119,7 @@ namespace ResearchMVC.DataLayer.Repositories
             return dbSet.SqlQuery(query, parameters).ToList();
         }
 
-        public void Insert(TEntity entity)
+        public virtual void Insert(TEntity entity)
         {
             dbSet.Add(entity);
         }
@@ -117,6 +127,11 @@ namespace ResearchMVC.DataLayer.Repositories
         public void Update(TEntity entity)
         {
             dbSet.Attach(entity);
+            SetEntityStateModified(entity);
+        }
+
+        public virtual void SetEntityStateModified(TEntity entity)
+        {
             dbContext.Entry(entity).State = EntityState.Modified;
         }
     }

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\AddressType.cs" />
+    <Compile Include="Models\AdventureWorksModelPartial.cs" />
     <Compile Include="Models\AdventureWorksModel.cs" />
     <Compile Include="Models\AWBuildVersion.cs" />
     <Compile Include="Models\BillOfMaterial.cs" />

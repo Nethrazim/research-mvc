@@ -17,5 +17,8 @@ namespace ResearchMVC.DataLayer.Repositories
         IEnumerable<TEntity> GetWithRawSql(string query, params object[] parameters);
         void Insert(TEntity entity);
         void Update(TEntity entity);
+        void SetEntityStateModified(TEntity entity);
+        TEntity Find(object id);
+        bool IsDetached(TEntity entity);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResearchMVC.DataLayer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ResearchMVC.DataLayer.Repositories
 {
-    public interface IEmployeesRepository
+    public interface IEmployeesRepository : IGenericRepository<Employee>
     {
     }
 }
